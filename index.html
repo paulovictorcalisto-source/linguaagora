@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LínguaAgora: aprende línguas a jogar</title>
+<meta name="description" content="Aprende inglês, espanhol, francês, italiano e alemão com jogos, lições por voz, missões diárias e tradutor.">
+<meta property="og:title" content="LínguaAgora">
+<meta name="theme-color" content="#021208">
+<meta name="robots" content="index,follow">
+<meta name="keywords" content="aprender inglês, aprender espanhol, aprender francês, tradutor, jogo de línguas, lições por voz">
+<meta property="og:description" content="Aprende línguas a jogar: lições por voz, missões diárias e tradutor.">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=Instrument+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#021208;--pn:#062a1b;--pn2:#0a3a26;--g:#00ff85;--y:#f4ff5c;--t:#eafff2;--s:#86c0a1;--e:#ff6b6b;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden;
+background-image:linear-gradient(rgba(0,255,133,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,133,.05) 1px,transparent 1px);background-size:44px 44px}
+h1,h2,h3,.wm{font-family:'Unbounded',sans-serif}
+button{font:inherit;color:inherit;border:0;cursor:pointer;background:none}
+:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;padding:22px 16px;border-right:2px solid var(--g);background:var(--bg);display:flex;flex-direction:column;gap:26px}
+.logo{display:flex;align-items:center;gap:10px;text-align:left}
+.logo svg{width:56px;height:56px;flex:none;overflow:visible}
+.face{transform-origin:32px 30px;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.logo:hover .face{transform:rotate(-12deg) scale(1.1)}
+.logo.pop .face{transform:rotate(360deg) scale(1.15);transition-duration:.7s}
+.wm{font-size:1.02rem;line-height:1.1;font-weight:500}
+.wm b{font-weight:800;color:var(--g)}
+.wm small{display:block;font-family:'Instrument Sans';font-size:.78rem;color:var(--s);font-weight:400;margin-top:4px}
+nav{display:flex;flex-direction:column;gap:6px}
+nav button{display:flex;gap:12px;align-items:center;padding:12px 14px;font-weight:700;border:2px solid transparent;text-align:left}
+nav button:hover{border-color:var(--pn2)}
+nav button.on{background:var(--g);color:#012a14;box-shadow:5px 5px 0 var(--y)}
+nav i{font-style:normal;font-size:1.15rem}
+main{padding:22px 34px 60px;max-width:960px;width:100%}
+.top{display:flex;justify-content:flex-end;gap:10px;margin-bottom:20px}
+.pill{border:2px solid var(--g);padding:7px 14px;font-weight:700;font-size:.9rem;background:var(--pn)}
+h2{font-size:1.7rem;margin-bottom:8px;font-weight:800}
+.sub{color:var(--s);margin-bottom:22px;max-width:55ch;line-height:1.5}
+.hero{display:grid;grid-template-columns:1fr 170px;gap:24px;align-items:center;border:2px solid var(--g);background:var(--pn);padding:30px;box-shadow:10px 10px 0 var(--g);margin-bottom:34px}
+.hl{font-family:'Unbounded';font-weight:800;font-size:clamp(1.9rem,5.2vw,3.4rem);line-height:1.05;word-break:break-word}
+.ptl{color:var(--s);margin:12px 0 22px}
+.btn{background:var(--y);color:#1c2200;font-weight:700;padding:13px 20px;border:2px solid #000;box-shadow:4px 4px 0 #000;transition:.1s;margin:0 8px 8px 0}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 #000}
+.btn.alt{background:var(--pn2);color:var(--t);border-color:var(--g);box-shadow:4px 4px 0 var(--g)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.chip{border:2px solid var(--pn2);padding:8px 14px;font-weight:500;background:var(--pn)}
+.chip.on{border-color:var(--g);background:var(--g);color:#012a14;font-weight:700}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.box{background:var(--pn);border:2px solid var(--pn2);padding:18px}
+.big{font-family:'Unbounded';font-size:1.6rem;font-weight:800;color:var(--g)}
+.path{position:relative;padding:10px 0 20px}
+.hex{width:92px;height:104px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--g);color:#012a14;font-family:'Unbounded';font-weight:800;font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.hex:not(:disabled):hover{transform:scale(1.1) rotate(-4deg)}
+.hex.done{background:var(--y)}
+.hex:disabled{background:var(--pn2);color:var(--s);cursor:not-allowed}
+.stop{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.stop span{font-weight:500}
+.tk{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--pn);border:2px dashed var(--g);padding:18px 22px;margin-bottom:16px;position:relative}
+.tk .st{position:absolute;right:18px;top:8px;font-family:'Unbounded';font-weight:800;color:var(--y);border:3px solid var(--y);padding:2px 10px;transform:rotate(-9deg);font-size:.95rem}
+.bar{height:14px;background:var(--bg);border:2px solid var(--g);margin:10px 0 0}
+.bar i{display:block;height:100%;background:var(--g);transition:width .5s}
+select,textarea{width:100%;background:var(--bg);border:2px solid var(--g);color:var(--t);padding:12px;font:inherit}
+textarea{min-height:120px;resize:vertical}
+.sw{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:14px}
+.sw .btn{margin:0}
+.out{font-family:'Unbounded';font-size:1.2rem;min-height:90px;margin-top:6px;border-color:var(--y)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.fc{perspective:700px;height:120px;width:100%}
+.fc div{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fc.f div{transform:rotateY(180deg)}
+.fc span{position:absolute;inset:0;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--g);background:var(--pn);padding:10px;font-weight:700;text-align:center;box-shadow:5px 5px 0 var(--pn2)}
+.fc span+span{transform:rotateY(180deg);background:var(--y);color:#1c2200;border-color:#000;font-family:'Unbounded';font-size:.95rem}
+.fc em{font-style:normal;font-size:.78rem;color:var(--s);font-weight:400;margin-top:4px}
+.chip.full{width:100%;margin-top:8px}
+#modal{position:fixed;inset:0;background:rgba(1,8,4,.95);z-index:99;display:none;align-items:center;justify-content:center;padding:20px}
+#modal.on{display:flex}
+.q{width:100%;max-width:520px}
+.q h3{font-size:1.4rem;margin:20px 0;line-height:1.25}
+.opt{display:block;width:100%;text-align:left;border:2px solid var(--g);background:var(--pn);padding:15px;margin-bottom:12px;font-size:1.05rem;box-shadow:4px 4px 0 var(--pn2)}
+.opt.ok{background:var(--g);color:#012a14;font-weight:700}
+.opt.no{background:var(--e);color:#2a0000;border-color:var(--e)}
+.trof{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin:22px 0}
+.trof .box{text-align:center;opacity:.35}.trof .box.on{opacity:1;border-color:var(--y)}
+.trof b{display:block;font-size:2rem}
+@media (max-width:760px){
+ .app{grid-template-columns:1fr}
+ aside{position:static;height:auto;flex-direction:row;padding:12px 16px;border-right:0;border-bottom:2px solid var(--g)}
+ nav{position:fixed;left:0;right:0;bottom:0;z-index:60;flex-direction:row;background:var(--bg);border-top:2px solid var(--g);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));gap:0}
+ nav button{flex:1;flex-direction:column;gap:2px;padding:6px 0;font-size:.66rem;align-items:center;text-align:center}
+ nav button.on{box-shadow:none}
+ main{padding:16px 16px 100px}
+ .hero{grid-template-columns:1fr;padding:22px;box-shadow:6px 6px 0 var(--g)}
+ .ring{width:120px;order:-1}
+}
+#intro{position:fixed;inset:0;z-index:200;background-color:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;overflow:hidden;background-image:linear-gradient(rgba(0,255,133,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,133,.06) 1px,transparent 1px);background-size:44px 44px}
+#intro.off{display:none}
+#intro h1{font-size:clamp(2.2rem,8vw,4.6rem);line-height:1;margin:14px 0}
+#intro h1 b{color:var(--g)}
+#fld{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bb{position:absolute;bottom:-100px;pointer-events:auto;background:var(--g);color:#012a14;font-weight:700;padding:18px 20px;border-radius:50%;min-width:88px;max-width:150px;border:3px solid #000;box-shadow:4px 4px 0 var(--y);animation:rise linear forwards;font-size:.95rem}
+@keyframes rise{to{transform:translateY(-125vh)}}
+#hud{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:3}
+#hud[hidden]{display:none}
+#intro.ok{box-shadow:inset 0 0 0 10px var(--g)}#intro.er{box-shadow:inset 0 0 0 10px var(--e)}
+.dc{position:absolute;bottom:-50px;color:rgba(0,255,133,.22);font-family:Unbounded,sans-serif;font-size:1.6rem;animation:rise linear infinite}
+.bb{background-image:radial-gradient(circle at 30% 25%,rgba(255,255,255,.7),transparent 38%);box-shadow:4px 4px 0 var(--y),0 0 24px rgba(0,255,133,.5)}
+.bb:nth-child(2){background-color:var(--y)}.bb:nth-child(3){background-color:#7dffd0}.bb:nth-child(4){background-color:#fff}
+.pt{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--y);transition:transform .6s ease-out,opacity .6s;z-index:5;pointer-events:none}
+#ctl{position:absolute;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:4}
+#hud .pill{font-family:Unbounded,sans-serif;font-size:.85rem;box-shadow:4px 4px 0 var(--y)}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}#intro.er #ist{animation:sh .2s}
+#ctl[hidden]{display:none}#hud{flex-wrap:wrap;padding:0 62px 0 14px}#gx{position:absolute;right:14px;top:0;width:44px;height:44px;padding:0;font-weight:800;cursor:pointer}
+.busca{width:100%;margin-bottom:16px;background:var(--bg);border:2px solid var(--g);color:var(--t);padding:12px;font:inherit}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <button class="logo" id="logo" aria-label="LínguaAgora — clica para ouvir outra saudação">
+    <svg viewBox="0 0 64 64"><g class="face">
+      <path d="M32 4C17 4 6 15 6 29s11 25 26 25h2l12 9V50c8-4 14-11 14-21C60 15 49 4 32 4z" fill="#00ff85"/>
+      <circle cx="32" cy="29" r="17" fill="#012a14"/>
+      <g stroke="#00ff85" stroke-width="2" stroke-linecap="round"><path d="M32 14v3M32 41v3M17 29h3M44 29h3"/></g>
+      <line id="hh" x1="32" y1="29" x2="32" y2="21" stroke="#f4ff5c" stroke-width="3.2" stroke-linecap="round"/>
+      <line id="hm" x1="32" y1="29" x2="32" y2="17" stroke="#eafff2" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="32" cy="29" r="2.4" fill="#f4ff5c"/></g></svg>
+    <div class="wm">Língua<b>Agora</b><small id="slogan">Começa já. Fala hoje.</small></div>
+  </button>
+  <nav id="nav"></nav>
+</aside>
+<main>
+  <div class="top"><div class="pill" id="sx"></div><div class="pill" id="ss"></div></div>
+  <div id="app"></div>
+</main>
+</div>
+<div id="intro"><div id="fld"></div><div id="hud" hidden><div class="pill" id="isc">Pontos: 0</div><div class="pill" id="itm">25 s</div><div class="pill" id="ilv"></div><button class="pill" id="gx" onclick="sair()" aria-label="Sair do jogo">✕</button></div><div id="ctl" hidden><button class="pill vt" onclick="vozTroca()"></button><button class="pill mt" onclick="musica(!musOn)"></button></div>
+<div id="ist" style="position:relative;z-index:2"><div style="font-size:4rem">⏱️</div><h1>Língua<b>Agora</b></h1><p class="sub" style="margin:0 auto 24px">Aprende línguas a jogar: lições, missões diárias, tradutor e conversa com voz.</p><button class="btn" onclick="entrar()">🚀 Começar a minha jornada</button><button class="btn alt" onclick="modos()">🎮 Jogar</button><button class="btn alt" onclick="cfgIntro()">⚙️ Configurações</button></div></div>
+<div id="modal"><div class="q" id="q"></div></div>
+
+<script>
+const K=['pt','en','es','fr','it','de'];
+const L={pt:['Português','pt-PT','🇵🇹'],en:['Inglês','en-US','🇬🇧'],es:['Espanhol','es-ES','🇪🇸'],fr:['Francês','fr-FR','🇫🇷'],it:['Italiano','it-IT','🇮🇹'],de:['Alemão','de-DE','🇩🇪']};
+const W=[
+["olá","hello","hola","bonjour","ciao","hallo"],["obrigado","thank you","gracias","merci","grazie","danke"],
+["por favor","please","por favor","s’il vous plaît","per favore","bitte"],["sim","yes","sí","oui","sì","ja"],
+["não","no","no","non","no","nein"],["água","water","agua","eau","acqua","Wasser"],
+["comida","food","comida","nourriture","cibo","Essen"],["casa","house","casa","maison","casa","Haus"],
+["amigo","friend","amigo","ami","amico","Freund"],["amor","love","amor","amour","amore","Liebe"],
+["bom dia","good morning","buenos días","bonjour","buongiorno","guten Morgen"],
+["boa noite","good night","buenas noches","bonne nuit","buonanotte","gute Nacht"],
+["desculpa","sorry","lo siento","désolé","scusa","Entschuldigung"],
+["quanto custa?","how much is it?","¿cuánto cuesta?","combien ça coûte ?","quanto costa?","wie viel kostet das?"],
+["livro","book","libro","livre","libro","Buch"],["tempo","time","tiempo","temps","tempo","Zeit"]];
+const EXTRA=`bom|good|bueno|bon|buono|gut;mau|bad|malo|mauvais|cattivo|schlecht;grande|big|grande|grand|grande|groß;pequeno|small|pequeño|petit|piccolo|klein;mãe|mother|madre|mère|madre|Mutter;pai|father|padre|père|padre|Vater;irmão|brother|hermano|frère|fratello|Bruder;irmã|sister|hermana|sœur|sorella|Schwester;homem|man|hombre|homme|uomo|Mann;mulher|woman|mujer|femme|donna|Frau;criança|child|niño|enfant|bambino|Kind;cão|dog|perro|chien|cane|Hund;gato|cat|gato|chat|gatto|Katze;pão|bread|pan|pain|pane|Brot;leite|milk|leche|lait|latte|Milch;café|coffee|café|café|caffè|Kaffee;maçã|apple|manzana|pomme|mela|Apfel;carne|meat|carne|viande|carne|Fleisch;peixe|fish|pescado|poisson|pesce|Fisch;cidade|city|ciudad|ville|città|Stadt;rua|street|calle|rue|strada|Straße;escola|school|escuela|école|scuola|Schule;trabalho|work|trabajo|travail|lavoro|Arbeit;dinheiro|money|dinero|argent|soldi|Geld;carro|car|coche|voiture|macchina|Auto;comboio|train|tren|train|treno|Zug;aeroporto|airport|aeropuerto|aéroport|aeroporto|Flughafen;hotel|hotel|hotel|hôtel|hotel|Hotel;sol|sun|sol|soleil|sole|Sonne;chuva|rain|lluvia|pluie|pioggia|Regen;dia|day|día|jour|giorno|Tag;noite|night|noche|nuit|notte|Nacht;hoje|today|hoy|aujourd’hui|oggi|heute;amanhã|tomorrow|mañana|demain|domani|morgen;ontem|yesterday|ayer|hier|ieri|gestern;vermelho|red|rojo|rouge|rosso|rot;azul|blue|azul|bleu|blu|blau;verde|green|verde|vert|verde|grün;um|one|uno|un|uno|eins;dois|two|dos|deux|due|zwei;três|three|tres|trois|tre|drei;ajuda|help|ayuda|aide|aiuto|Hilfe;adeus|goodbye|adiós|au revoir|arrivederci|tschüss;até logo|see you later|hasta luego|à bientôt|a dopo|bis später;eu gosto|I like it|me gusta|j’aime ça|mi piace|ich mag das;não percebo|I don’t understand|no entiendo|je ne comprends pas|non capisco|ich verstehe nicht;onde fica a casa de banho?|where is the bathroom?|¿dónde está el baño?|où sont les toilettes ?|dov’è il bagno?|wo ist die Toilette?;a conta, por favor|the bill, please|la cuenta, por favor|l’addition, s’il vous plaît|il conto, per favore|die Rechnung, bitte;chamo-me|my name is|me llamo|je m’appelle|mi chiamo|ich heiße`.split(';').map(s=>s.split('|'));W.push(...EXTRA);
+const EX2=`comer|to eat|comer|manger|mangiare|essen;beber|to drink|beber|boire|bere|trinken;falar|to speak|hablar|parler|parlare|sprechen;ir|to go|ir|aller|andare|gehen;ter|to have|tener|avoir|avere|haben;querer|to want|querer|vouloir|volere|wollen;poder|can|poder|pouvoir|potere|können;ver|to see|ver|voir|vedere|sehen;dormir|to sleep|dormir|dormir|dormire|schlafen;viver|to live|vivir|vivre|vivere|leben;cabeça|head|cabeza|tête|testa|Kopf;mão|hand|mano|main|mano|Hand;olho|eye|ojo|œil|occhio|Auge;coração|heart|corazón|cœur|cuore|Herz;boca|mouth|boca|bouche|bocca|Mund;porta|door|puerta|porte|porta|Tür;janela|window|ventana|fenêtre|finestra|Fenster;mesa|table|mesa|table|tavolo|Tisch;cama|bed|cama|lit|letto|Bett;cozinha|kitchen|cocina|cuisine|cucina|Küche;mar|sea|mar|mer|mare|Meer;montanha|mountain|montaña|montagne|montagna|Berg;árvore|tree|árbol|arbre|albero|Baum;flor|flower|flor|fleur|fiore|Blume;lua|moon|luna|lune|luna|Mond;arroz|rice|arroz|riz|riso|Reis;ovo|egg|huevo|œuf|uovo|Ei;queijo|cheese|queso|fromage|formaggio|Käse;sopa|soup|sopa|soupe|zuppa|Suppe;vinho|wine|vino|vin|vino|Wein;quatro|four|cuatro|quatre|quattro|vier;cinco|five|cinco|cinq|cinque|fünf;seis|six|seis|six|sei|sechs;dez|ten|diez|dix|dieci|zehn;cem|one hundred|cien|cent|cento|hundert;semana|week|semana|semaine|settimana|Woche;mês|month|mes|mois|mese|Monat;ano|year|año|an|anno|Jahr;hora|hour|hora|heure|ora|Stunde;agora|now|ahora|maintenant|adesso|jetzt;quem|who|quién|qui|chi|wer;o que|what|qué|quoi|che cosa|was;onde|where|dónde|où|dove|wo;quando|when|cuándo|quand|quando|wann;porquê|why|por qué|pourquoi|perché|warum;bonito|beautiful|bonito|beau|bello|schön;novo|new|nuevo|nouveau|nuovo|neu;velho|old|viejo|vieux|vecchio|alt;feliz|happy|feliz|heureux|felice|glücklich;triste|sad|triste|triste|triste|traurig;tenho fome|I am hungry|tengo hambre|j’ai faim|ho fame|ich habe Hunger;estou cansado|I am tired|estoy cansado|je suis fatigué|sono stanco|ich bin müde;fala devagar, por favor|speak slowly, please|habla despacio, por favor|parlez lentement, s’il vous plaît|parla lentamente, per favore|sprich bitte langsam;quanto tempo demora?|how long does it take?|¿cuánto tiempo tarda?|combien de temps ça prend ?|quanto tempo ci vuole?|wie lange dauert das?;boa viagem|have a good trip|buen viaje|bon voyage|buon viaggio|gute Reise`.split(';').map(s=>s.split('|'));W.push(...EX2);
+const SAUD={pt:['Bom dia','Boa tarde','Boa noite'],en:['Good morning','Good afternoon','Good evening'],es:['Buenos días','Buenas tardes','Buenas noches'],fr:['Bonjour','Bon après-midi','Bonsoir'],it:['Buongiorno','Buon pomeriggio','Buonasera'],de:['Guten Morgen','Guten Tag','Guten Abend']};
+const NOS=["Primeiras palavras","Casa e afetos","Dia a dia","Opostos","Família","Pessoas e bichos","Comida e bebida","Cidade","Viagens","Tempo e dias","Cores e números","Despedidas","Frases úteis","Verbos 1","Verbos 2","Corpo","Em casa","Natureza","Alimentos","Números","Horas e datas","Perguntas","Descrições","Frases para viajar"];
+const FR=["Começa já. Fala hoje.","Uma palavra de cada vez.","Errar também é aprender.","Cinco minutos chegam."];
+const hoje=()=>new Date().toISOString().slice(0,10);
+const reset=()=>({xp:0,streak:0,last:'',lang:'en',done:{},favs:[],date:hoje(),m:{l:0,x:0,t:0},c:[],tab:'inicio'});
+let S=reset();
+try{Object.assign(S,JSON.parse(localStorage.getItem('la')||'{}'))}catch(e){}
+if(S.date!==hoje()){S.date=hoje();S.m={l:0,x:0,t:0};S.c=[]}
+const save=()=>{try{localStorage.setItem('la',JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),ia=l=>K.indexOf(l),lvl=()=>Math.floor(S.xp/100)+1,mix=a=>[...a].sort(()=>Math.random()-.5);
+let VOZES=[];const cv=()=>{try{VOZES=speechSynthesis.getVoices()}catch(e){}};cv();try{speechSynthesis.onvoiceschanged=cv}catch(e){}
+S.vz=S.vz||'f';
+const HOM=/daniel|diego|jorge|carlos|pablo|thomas|luca|cosimo|markus|stefan|david|mark|james|paulo|nicolas|antoine|hans|yannick|rishi|joao|henri|ralph|fred|bruce/i;
+const MUL=/samantha|monica|paulina|amelie|aurelie|alice|elsa|anna|petra|helena|joana|catarina|luciana|sara|zira|hazel|susan|victoria|karen|fiona|moira|tessa|kyoko|francisca|ines|marie|eva|yelda|milena|laura|paola|elena/i;
+const gen=n=>/\bfemale\b|feminin/i.test(n)?'f':/\bmale\b|masculin/i.test(n)?'m':HOM.test(n)?'m':MUL.test(n)?'f':/google/i.test(n)?'f':'?';
+function voz(l){if(!VOZES.length)cv();const c=L[l][1].toLowerCase(),b=c.slice(0,2),vs=VOZES.filter(v=>v.lang.replace('_','-').toLowerCase().startsWith(b)),ex=vs.filter(v=>v.lang.replace('_','-').toLowerCase()===c),p=ex.length?ex:vs;return p.find(v=>gen(v.name)===S.vz)||vs.find(v=>gen(v.name)===S.vz)||p[0]||null}
+function falar(t,l){try{if(!t||!window.speechSynthesis)return false;const u=new SpeechSynthesisUtterance(t),v=voz(l);u.lang=L[l][1];if(v){u.voice=v;u.lang=v.lang}if(!v||gen(v.name)!==S.vz)u.pitch=S.vz==='m'?.6:1.3;u.rate=.95;speechSynthesis.cancel();setTimeout(()=>speechSynthesis.speak(u),80);return true}catch(e){return false}}
+function vozTxt(){document.querySelectorAll('.vt').forEach(b=>{b.textContent='🔊 Voz '+(S.vz==='m'?'masculina':'feminina')})}
+function vozTroca(){S.vz=S.vz==='m'?'f':'m';save();vozTxt();falar(SAUD[S.lang]?SAUD[S.lang][1]:'Hello',S.lang)}
+vozTxt();
+const periodo=()=>{const h=new Date().getHours();return h<12?0:h<19?1:2};
+const TABS=[['inicio','🏠','Início'],['aprender','🎯','Aprender'],['missoes','🎟️','Missões'],['tradutor','🔁','Tradutor'],['palavras','🃏','Palavras'],['conversa','💬','Conversa'],['perfil','🏆','Perfil']];
+function topo(){$('#sx').textContent='⭐ '+S.xp+' XP · nível '+lvl();$('#ss').textContent='🔥 '+S.streak+(S.streak===1?' dia':' dias');
+ $('#nav').innerHTML=NAV.map(([k,e,n])=>`<button class="${S.tab===k||(k==='mais'&&SUB.includes(S.tab))?'on':''}" onclick="ir('${k}')"><i>${e}</i>${n}</button>`).join('')}
+const ir=t=>{S.tab=t;save();render();if(musOn)nota(PENT[Math.floor(Math.random()*8)],1,.05)};
+const chips=()=>`<div class="chips">${K.slice(1).map(k=>`<button class="chip ${S.lang===k?'on':''}" onclick="S.lang='${k}';save();render()">${L[k][2]} ${L[k][0]}</button>`).join('')}</div>`;
+function ring(){const P=[S.m.l,S.m.x/30,S.m.t/3].map(v=>Math.min(1,v)),C=['#00ff85','#f4ff5c','#eafff2'];
+ return `<svg class="ring" viewBox="0 0 140 140" role="img" aria-label="Progresso das missões de hoje">`+[62,48,34].map((r,i)=>`<circle cx="70" cy="70" r="${r}" stroke="#0a3a26"/><circle cx="70" cy="70" r="${r}" stroke="${C[i]}" stroke-dasharray="${(2*Math.PI*r*P[i]).toFixed(1)} 999" transform="rotate(-90 70 70)"/>`).join('')+`</svg>`}
+const V={
+inicio(){const f=S.done[S.lang]||0,p=periodo();return `
+<div class="hero"><div><div class="hl">${SAUD[S.lang][p]}!</div>
+<p class="ptl">Em ${L[S.lang][0].toLowerCase()}, “${SAUD.pt[p]}”. Já são ${f} de ${NOS.length} lições feitas.</p>
+<button class="btn" onclick="ir('aprender')">Continuar a aprender</button><button class="btn alt" onclick="falar('${SAUD[S.lang][p]}','${S.lang}')">🔊 Ouvir</button></div>${ring()}</div>
+<h2>Que língua queres falar?</h2>${chips()}
+<div class="row"><div class="box" style="flex:1;min-width:180px"><div class="big">${S.favs.length}</div>palavras guardadas</div>
+<div class="box" style="flex:1;min-width:180px"><div class="big">${S.c.length}/13</div>missões recebidas hoje</div>
+<div class="box" style="flex:1;min-width:180px"><div class="big">${S.streak}</div>dias seguidos</div></div>`},
+aprender(){const f=S.done[S.lang]||0;return `<h2>Caminho de ${L[S.lang][0].toLowerCase()}</h2><p class="sub">Cada lição tem 5 perguntas. Com 3 certas, desbloqueias a seguinte.</p><button class="btn ${S.voz?'':'alt'}" onclick="S.voz=!S.voz;save();render()">🎤 Lições por voz: ${S.voz?'ligadas':'desligadas'}</button><button class="btn" onclick="micTeste()">🎤 Permitir microfone</button><p class="sub" id="mm" aria-live="polite"></p><div class="box" style="margin:16px 0"><b>✨ Adiciona as tuas palavras</b><p class="sub" style="margin:6px 0 10px">Escreve até 4 palavras ou frases em português, separadas por vírgulas. Traduzo para as 5 línguas, guardo no teu dicionário e fazes um quiz.</p><input id="tema" class="busca" placeholder="ex.: pastel de nata, bom fim de semana" style="margin-bottom:10px"><button class="btn" onclick="gerar()">Adicionar e treinar</button></div>${SR?'':'<p class="sub">Este navegador não reconhece voz. Experimenta o Chrome.</p>'}${chips()}
+<div class="path">${NOS.map((n,i)=>`<div class="stop" style="margin-left:${Math.round(Math.sin(i*1.1)*55)+55}px"><button class="hex ${i<f?'done':''}" ${i>f?'disabled':''} onclick="licao(${i})" aria-label="Lição ${i+1}: ${n}">${i<f?'✓':i+1}</button><span>${n}</span></div>`).join('')}</div>`},
+missoes(){const M=[['l','Faz 1 lição',1,'Completa qualquer lição.'],['l3','Faz 3 lições',3,'Três lições num só dia.'],['x','Ganha 30 XP',30,'Cada resposta certa vale 10.'],['x2','Ganha 80 XP',80,'Um dia a sério.'],['g','Acerta 15 respostas',15,'Em qualquer lição.'],['a','Lição perfeita',1,'Acerta as 5 perguntas.'],['v','5 respostas por voz',5,'Liga as lições por voz no Aprender.'],['p','Vira 10 cartas',10,'Vai à aba Palavras.'],['f','Guarda 3 palavras',3,'Marca as tuas favoritas.'],['t','Traduz 3 vezes',3,'Usa o tradutor.'],['t8','Traduz 8 vezes',8,'Pratica com o tradutor.'],['c2','Treino de frases',3,'Verifica 3 respostas em Conversa.'],['j','Faz 50 pontos no jogo',50,'No jogo dos balões da página inicial.']];
+return `<h2>Missões de hoje</h2><p class="sub">Renovam à meia-noite. Cada missão dá 20 XP quando a recebes.</p>`+M.map(([k,n,meta,d])=>{const p=Math.min(S.m[k]||0,meta),ok=p>=meta,rec=S.c.includes(k);
+return `<div class="tk">${rec?'<span class="st">Feito</span>':''}<div style="flex:1;min-width:200px"><h3 style="font-size:1.05rem">${n}</h3><div class="sub" style="margin:4px 0 0">${d} (${p}/${meta})</div><div class="bar"><i style="width:${p/meta*100}%"></i></div></div>
+<button class="btn ${ok&&!rec?'':'alt'}" ${ok&&!rec?'':'disabled'} onclick="receber('${k}')">${rec?'Recebido':ok?'Receber 20 XP':'Em curso'}</button></div>`}).join('')},
+tradutor(){const o=S.o||'pt',d=S.d||S.lang,op=x=>Object.keys(L).map(k=>`<option value="${k}" ${k===x?'selected':''}>${L[k][2]} ${L[k][0]}</option>`).join('');
+return `<h2>Tradutor</h2><p class="sub">Traduz palavras e frases entre 14 línguas (até 400 caracteres de cada vez) e carrega em Ouvir para escutares a pronúncia.</p>
+<div class="sw"><select id="o" aria-label="Língua de origem">${op(o)}</select><button class="btn alt" onclick="troca()" aria-label="Trocar línguas">⇄</button><select id="d" aria-label="Língua de destino">${op(d)}</select></div>
+<textarea id="in" placeholder="Escreve aqui. Exemplo: olá amigo"></textarea>
+<div style="margin:14px 0"><button class="btn" onclick="traduz()">Traduzir</button><button class="btn alt" onclick="ouve()">🔊 Ouvir</button></div><p class="sub" id="vst" aria-live="polite"></p>
+<div class="box out" id="out" aria-live="polite">${S.res||'A tradução aparece aqui.'}</div>`},
+palavras(){return `<h2>Palavras</h2><p class="sub">Toca numa palavra para abrir o dicionário: tradução, pronúncia e significado.</p>${chips()}
+<input class="busca" placeholder="Procurar em qualquer língua…" aria-label="Procurar palavra" oninput="filtra(this.value)"><div class="cards" id="cards">${W.map((w,i)=>`<div><button class="fc" onclick="this.classList.toggle('f');S.m.p=(S.m.p||0)+1;save();dic(${i})"><div><span>${w[0]}<em>português</em></span><span>${w[ia(S.lang)]}</span></div></button>
+<button class="chip full ${S.favs.includes(i)?'on':''}" onclick="fav(${i})">${S.favs.includes(i)?'♥ Guardada':'♡ Guardar'}</button></div>`).join('')}</div>`},
+mais(){const T=[['missoes','🎟️','Missões','Tarefas diárias com XP'],['conversa','💬','Conversa','Treina frases a escrever ou a falar'],['jogo','🎮','Jogo','Os balões das palavras'],['perfil','🏆','Perfil','Nível e troféus'],['config','⚙️','Configurações','Voz, música e microfone']];
+return `<h2>Mais</h2><p class='sub'>Tudo o resto do LínguaAgora, num só sítio.</p><div class='trof'>${T.map(([k,e,n,d])=>`<button class='box' style='opacity:1;text-align:left;cursor:pointer;border-color:var(--g)' onclick='go("${k}")'><b>${e}</b><span style='font-family:Unbounded;font-weight:800'>${n}</span><span class='sub' style='display:block;margin:6px 0 0'>${d}</span></button>`).join('')}</div>`},
+config(){return `<h2>Configurações</h2><p class='sub'>Ajusta o LínguaAgora ao teu gosto.</p><div class='row' style='gap:12px'><button class='btn vt' onclick='vozTroca()'></button><button class='btn alt mt' onclick='musica(!musOn)'></button><button class='btn ${S.voz?'':'alt'}' onclick='S.voz=!S.voz;save();render()'>🎤 Lições por voz: ${S.voz?'ligadas':'desligadas'}</button><button class='btn alt' onclick='micTeste()'>Permitir microfone</button></div><p class='sub' id='mm' aria-live='polite' style='margin-top:14px'></p><button class='btn alt' onclick='abrirJogo()'>🎮 Abrir o jogo</button>`},
+conversa(){return `<h2>Conversa</h2><p class='sub'>Pratica com um professor virtual em ${L[S.lang][0].toLowerCase()}. Ele responde e ajuda-te a corrigir.</p>${chips()}<div class='box' id='chat' style='min-height:240px;max-height:50vh;overflow:auto;margin-bottom:12px' aria-live='polite'>${(S.chat||[]).map(m=>`<p style='margin:0 0 10px;${m.r==='u'?'color:var(--y)':''}'><b>${m.r==='u'?'Tu':'Professor'}:</b> ${esc(m.t)}</p>`).join('')||'Diz olá para começar.'}</div><textarea id='cm' style='min-height:70px' placeholder='Escreve ou fala…'></textarea><div style='margin-top:12px'><button class='btn' onclick='enviar()'>Enviar</button><button class='btn alt' id='mic' onclick='ditar()'>🎤 Falar</button><button class='btn alt' onclick='S.chat=[];save();render()'>Limpar</button></div>`},
+perfil(){const T=[['🌱','Primeira lição',Object.keys(S.done).length>0],['🔥','3 dias seguidos',S.streak>=3],['💯','100 XP',S.xp>=100],['📚','3 palavras guardadas',S.favs.length>=3]];
+return `<h2>O teu perfil</h2><p class="sub">Nível ${lvl()}. Faltam ${100-S.xp%100} XP para o seguinte.</p><div class="bar"><i style="width:${S.xp%100}%"></i></div>
+<div class="trof">${T.map(([e,n,ok])=>`<div class="box ${ok?'on':''}"><b>${e}</b>${n}</div>`).join('')}</div>
+<button class="btn alt" onclick="if(confirm('Apagar todo o progresso?')){S=reset();save();render()}">Recomeçar do zero</button>`}};
+function render(){topo();$('#app').innerHTML=V[S.tab]();scrollTo(0,0);vozTxt();musTxt()}
+function fav(i){if(!S.favs.includes(i))S.m.f=(S.m.f||0)+1;S.favs=S.favs.includes(i)?S.favs.filter(x=>x!==i):[...S.favs,i];save();const y=scrollY;render();scrollTo(0,y)}
+function receber(k){if(S.c.includes(k))return;S.c.push(k);S.xp+=20;save();render()}
+function troca(){const o=$('#o').value,d=$('#d').value;S.o=d;S.d=o;render()}
+function traduzOld(){const o=$('#o').value,d=$('#d').value,t=$('#in').value.trim().toLowerCase();S.o=o;S.d=d;if(!t)return;
+ const b=s=>W.find(w=>w[ia(o)].toLowerCase().replace(/[?!.,¿¡]/g,'')===s.replace(/[?!.,¿¡]/g,''));let r=b(t),txt;
+ if(r)txt=r[ia(d)];else{let ok=0;txt=t.split(/\s+/).map(p=>{const x=b(p);if(x){ok++;return x[ia(d)]}return '['+p+']'}).join(' ');if(!ok)txt='Ainda não conheço isto. Experimenta “casa” ou “obrigado”.'}
+ S.res=txt;S.rl=d;S.m.t=(S.m.t||0)+1;S.m.t8=S.m.t;save();render();$('#in').value=t}
+function ouve(){const o=$('#out');if(!S.res||!S.rl){o.textContent='Traduz primeiro um texto e depois carrega em Ouvir.';return}const ok=falar(S.res,S.rl),v=voz(S.rl),m=$('#vst');if(m)m.textContent=!ok?'O teu navegador não consegue falar. Experimenta o Chrome.':v?'A falar com a voz '+(gen(v.name)==='m'?'masculina':gen(v.name)==='f'?'feminina':(S.vz==='m'?'masculina':'feminina')+' (ajustada)')+': '+v.name:'Este aparelho não tem voz instalada para '+L[S.rl][0].toLowerCase()+'. Estou a usar a voz padrão.'}
+let Qs,qi,ac,li;
+function licao(i){li=i;const base=W.slice(i*5,i*5+5),pool=mix(W).filter(w=>!base.includes(w)),l=ia(S.lang);
+ Qs=mix(base).map(w=>({p:w[0],r:w[l],o:mix([w[l],...mix(pool).slice(0,3).map(x=>x[l])])}));qi=0;ac=0;$('#modal').classList.add('on');pergunta()}
+function pergunta(){const q=Qs[qi];if(S.voz&&SR&&!q.t)return perguntaVoz(q);$('#q').innerHTML=`<div class="bar"><i style="width:${qi/Qs.length*100}%"></i></div><button class="chip" style="margin-top:14px" onclick="fecha()">Sair da lição</button>
+<h3>Como se diz “${q.p}” em ${L[S.lang][0].toLowerCase()}?</h3>${q.o.map(o=>`<button class="opt" data-v="${o.replace(/"/g,'&quot;')}" onclick="resp(this)">${o}</button>`).join('')}`}
+function resp(b){const q=Qs[qi],ok=b.dataset.v===q.r;document.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q.r)x.classList.add('ok')});
+ if(ok){ac++;falar(q.r,S.lang)}else b.classList.add('no');setTimeout(()=>{qi++;qi<Qs.length?pergunta():fim()},ok?900:1500)}
+function fim(){const xp=ac*10;S.xp+=xp;S.m.x=(S.m.x||0)+xp;S.m.x2=S.m.x;S.m.l=(S.m.l||0)+1;S.m.l3=S.m.l;S.m.g=(S.m.g||0)+ac;if(ac===Qs.length)S.m.a=1;if(S.voz&&SR)S.m.v=(S.m.v||0)+ac;if((S.done[S.lang]||0)===li&&ac>=3)S.done[S.lang]=li+1;
+ if(S.last!==hoje()){const o=new Date();o.setDate(o.getDate()-1);S.streak=S.last===o.toISOString().slice(0,10)?S.streak+1:1;S.last=hoje()}save();
+ $('#q').innerHTML=`<h3>${ac>=3?'Lição concluída!':'Quase lá.'}</h3><p class="sub">Acertaste ${ac} de ${Qs.length} e ganhaste ${xp} XP.${ac<3?' Precisas de 3 certas para desbloquear a seguinte.':''}</p><button class="btn" onclick="fecha()">Continuar</button>`}
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,'').trim();
+function lev(a,b){const d=[...Array(b.length+1)].map((_,i)=>[i]);for(let j=0;j<=a.length;j++)d[0][j]=j;for(let i=1;i<=b.length;i++)for(let j=1;j<=a.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[j-1]===b[i-1]?0:1));return d[b.length][a.length]}
+function perguntaVoz(q){$('#q').innerHTML=`<div class="bar"><i style="width:${qi/Qs.length*100}%"></i></div><button class="chip" style="margin-top:14px" onclick="fecha()">Sair da lição</button><h3>Diz em ${L[S.lang][0].toLowerCase()}: “${q.p}”</h3><button class="btn" onclick="ouvir()">🎤 Carregar e falar</button><button class="btn alt" onclick="falar(Qs[qi].r,S.lang)">🔊 Ouvir a resposta</button><button class="btn alt" onclick="Qs[qi].t=1;pergunta()">Usar opções</button><p class="sub" id="vm" aria-live="polite" style="margin-top:12px">Carrega no microfone e diz a frase em voz alta.</p>`}
+function ouvir(){const q=Qs[qi],m=$('#vm');if(q.d)return;const r=new SR();r.lang=L[S.lang][1];r.maxAlternatives=3;m.textContent='A ouvir…';
+ r.onresult=e=>{q.d=1;const h=[...e.results[0]].map(x=>norm(x.transcript)),a=norm(q.r),ok=h.some(x=>x===a||lev(x,a)<=(a.length>8?2:1));
+  m.textContent=(ok?'Muito bem! ':'Percebi “'+e.results[0][0].transcript+'”. ')+'Resposta: '+q.r;if(ok)ac++;setTimeout(()=>{qi++;qi<Qs.length?pergunta():fim()},ok?1100:2300)};
+ r.onerror=()=>{m.textContent='Não consegui usar o microfone. Permite o acesso no navegador ou escolhe “Usar opções”.'};
+ try{r.start()}catch(x){r.onerror()}}
+function filtra(v){v=v.toLowerCase();document.querySelectorAll('#cards>div').forEach((d,i)=>{d.style.display=(!v||W[i].join(' ').toLowerCase().includes(v))?'':'none'})}
+async function micTeste(){const m=$('#mm');try{const s=await navigator.mediaDevices.getUserMedia({audio:true});s.getTracks().forEach(t=>t.stop());S.voz=true;save();render();$('#mm').textContent='Microfone permitido. Lições por voz ligadas.'}catch(e){m.textContent='Não deu para aceder ao microfone. Abre o site num separador próprio e permite o microfone no navegador.'}}
+let G={s:0,t:25,iv:0};
+function jogar(v){G.v=v||1;G.c=0;G.s=0;G.t=25;G.n=1;G.l=3;G.on=true;$('#ctl').hidden=false;vidas();if(S.mus!==false&&!musOn)musica(true);$('#hud').hidden=false;$('#ist').innerHTML='<h2 id="alvo" style="pointer-events:none;font-size:clamp(1.3rem,5vw,2.2rem);max-width:18ch;margin:0 auto"></h2>';$('#isc').textContent='Pontos: 0';$('#itm').textContent='25 s';ronda();clearInterval(G.iv);G.iv=setInterval(()=>{G.t--;$('#itm').textContent=Math.max(G.t,0)+' s';if(G.t<=0)fimJogo()},1000)}
+function ronda(){if(G.t<=0||G.l<=0)return;const f=$('#fld');f.innerHTML='';const w=W[Math.floor(Math.random()*W.length)],k=K[1+Math.floor(Math.random()*5)],l=ia(k);
+ $('#alvo').textContent='Como se diz “'+w[0]+'” em '+L[k][0].toLowerCase()+'?';
+ mix([w,...mix(W.filter(x=>x!==w&&x[l]!==w[l])).slice(0,3)]).forEach((x,i)=>{const b=document.createElement('button');b.className='bb';b.textContent=x[l];b.style.left=(4+i*20+Math.random()*4)+'%';b.style.animationDuration=(G.v*(7+Math.random()*3))+'s';b.style.animationDelay=(i*.5)+'s';
+  b.onclick=()=>{if(x===w){G.c++;G.s+=10*(1+Math.floor(G.c/3));if(G.c%5===0){G.n++;G.v=Math.max(.35,G.v*.85);G.t+=4}$('#isc').textContent='Nível '+G.n+' · '+G.s+' pts'+(G.c>=3?' · x'+(1+Math.floor(G.c/3)):'');nota(PENT[Math.min(7,G.c)],.7,.14);flash('ok');{const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2)}falar(w[l],k);ronda()}else{G.c=0;nota(130,.5,.12);flash('er');falar(x[l],k);G.l--;vidas();if(G.l<=0){fimJogo();return}b.remove();if(!f.children.length)ronda()}};
+  b.onanimationend=()=>{b.remove();if(!f.children.length)ronda()};f.appendChild(b)})}
+function fimJogo(){G.on=false;clearInterval(G.iv);$('#ctl').hidden=true;$('#fld').innerHTML='';$('#hud').hidden=true;const nr=G.s>(S.rec||0);if(nr)S.rec=G.s;S.xp+=G.s;S.m.j=Math.max(S.m.j||0,G.s);save();topo();$('#ist').innerHTML=`<h1 style="font-size:2.6rem">${G.s} pontos!</h1><p class="sub" style="margin:0 auto 24px">Ganhaste ${G.s} XP. ${nr?'Novo recorde! ':'Recorde: '+S.rec+'. '}Agora é a vez das lições.</p><button class="btn" onclick="jogar(G.v)">Jogar outra vez</button><button class="btn alt" onclick="sair()">Voltar ao início</button>`}
+function entrar(){clearInterval(G.iv);if(S.mus!==false&&!musOn)musica(true);$('#intro').classList.add('off')}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+Object.assign(L,{ja:['Japonês','ja-JP','🇯🇵'],zh:['Chinês','zh-CN','🇨🇳'],ru:['Russo','ru-RU','🇷🇺'],ar:['Árabe','ar-SA','🇸🇦'],ko:['Coreano','ko-KR','🇰🇷'],nl:['Neerlandês','nl-NL','🇳🇱'],tr:['Turco','tr-TR','🇹🇷'],hi:['Hindi','hi-IN','🇮🇳'],pl:['Polaco','pl-PL','🇵🇱']});
+const TEMAS=['restaurante','trabalho','saúde','compras','futebol','viagens','família','tecnologia','escola','música'];
+S.gen=S.gen||[];W.push(...S.gen);
+function bip(f){try{const a=bip.a||(bip.a=new AudioContext()),o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.12)}catch(e){}}
+function flash(c){const i=$('#intro');i.classList.add(c);setTimeout(()=>i.classList.remove(c),220)}
+function deco(){const f=$('#fld');['hello','hola','ciao','salut','hallo','olá','merci','gracias','danke','grazie','你好','こんにちは'].forEach((t,i)=>{const s=document.createElement('span');s.className='dc';s.textContent=t;s.style.left=(i*8+Math.random()*4)+'%';s.style.animationDuration=(9+Math.random()*8)+'s';s.style.animationDelay=(-Math.random()*12)+'s';f.appendChild(s)})}deco();
+function quiz(base){const pool=mix(W).filter(w=>!base.includes(w)),l=ia(S.lang);Qs=mix(base).map(w=>({p:w[0],r:w[l],o:mix([w[l],...mix(pool).slice(0,3).map(x=>x[l])])}));qi=0;ac=0;$('#modal').classList.add('on');pergunta()}
+async function traduz(){const o=$('#o').value,d=$('#d').value,t=$('#in').value.trim();S.o=o;S.d=d;if(!t)return;const n=x=>x.toLowerCase().replace(/[?!.,¿¡]/g,'');
+ const loc=(ia(o)>=0&&ia(d)>=0)?W.find(w=>n(w[ia(o)])===n(t)):null;let txt;
+ if(loc)txt=loc[ia(d)];else{$('#out').textContent='A traduzir…';try{const s=await claude.use('sample');if(!s)throw 0;const r=await s('Traduz o texto de '+L[o][0]+' para '+L[d][0]+'. Responde só com a tradução, sem aspas nem explicações.\n\n'+t,{modelTier:'quick'});txt=r.text.trim()}catch(e){txt='A tradução livre precisa da tua permissão. Abre o site num separador próprio e aceita o pedido.'}}
+ S.res=txt;S.rl=d;S.m.t=(S.m.t||0)+1;S.m.t8=S.m.t;save();render();$('#in').value=t}
+async function gerar(){const tema=$('#tema').value.trim()||TEMAS[Math.floor(Math.random()*TEMAS.length)],m=$('#mm');m.textContent='A criar palavras sobre “'+tema+'”…';
+ try{const s=await claude.use('sample');if(!s)throw 0;const r=await s.json('Cria 8 palavras ou frases curtas e úteis sobre o tema “'+tema+'”. Devolve só JSON: uma lista de listas, cada uma com 6 textos nesta ordem: português de Portugal, inglês, espanhol, francês, italiano, alemão.',{modelTier:'quick'});
+  const n=r.filter(a=>Array.isArray(a)&&a.length===6&&a.every(x=>typeof x==='string')).slice(0,8);if(n.length<4)throw 0;W.push(...n);S.gen.push(...n);S.m.g=(S.m.g||0);save();m.textContent='';li=-1;quiz(n)}catch(e){m.textContent='Não consegui criar a lição. Abre o site num separador próprio e aceita o pedido.'}}
+async function enviar(){const el=$('#cm'),t=el.value.trim();if(!t)return;S.chat=(S.chat||[]).concat({r:'u',t});el.value='';render();$('#chat').innerHTML+='<p class="sub">A pensar…</p>';let rep;
+ try{const s=await claude.use('sample');if(!s)throw 0;const h=S.chat.slice(-8).map(m=>({role:m.r==='u'?'user':'assistant',content:m.t}));while(h.length&&h[0].role!=='user')h.shift();
+  const r=await s([{role:'user',content:'Faz de professor simpático de '+L[S.lang][0]+' para um português. Responde sempre em '+L[S.lang][0]+', com no máximo 2 frases curtas, e acrescenta entre parênteses a tradução em português e uma correção breve se eu errar.'},{role:'assistant',content:'Combinado!'},...h],{modelTier:'quick',cache:false});rep=r.text.trim()}catch(e){rep='Preciso da tua permissão para conversar. Abre o site num separador próprio e aceita o pedido.'}
+ S.chat.push({r:'a',t:rep});S.m.c2=(S.m.c2||0)+1;save();render();falar(rep.split('(')[0],S.lang)}
+let DICT=null,dictOn=false;
+try{claude.use('dictation').then(d=>{DICT=d;if(d){d.onFinal(({text})=>{const c=$('#cm');if(c)c.value+=(c.value?' ':'')+text});d.onState(({state})=>{dictOn=state==='listening';const b=$('#mic');if(b)b.textContent=dictOn?'⏹ A ouvir…':'🎤 Falar'})}}).catch(()=>{})}catch(e){}
+function ditar(){if(DICT){(dictOn?DICT.stop():DICT.start()).catch(()=>{});return}if(SR){const r=new SR();r.lang=L[S.lang][1];r.onresult=ev=>{$('#cm').value+=ev.results[0][0].transcript};try{r.start()}catch(x){}}else $('#mic').textContent='Sem microfone'}
+let AC=null,MI=0,musOn=false;const PENT=[261.63,293.66,329.63,392,440,523.25,587.33,659.25];
+function ctx(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume()}catch(e){}return AC}
+function nota(f,d,v,t){const a=ctx();if(!a)return;const o=a.createOscillator(),g=a.createGain(),n=a.currentTime+(t||0);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,n);g.gain.linearRampToValueAtTime(v,n+.06);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(a.destination);o.start(n);o.stop(n+d+.1)}
+function musTxt(){document.querySelectorAll('.mt').forEach(b=>{b.textContent=musOn?'🎵 Música: ligada':'🎵 Música: desligada'})}
+function musica(on){musOn=on;S.mus=on;save();clearInterval(musica.iv);if(on){const P=[0,2,4,5,4,2,3,1];musica.iv=setInterval(()=>{const i=MI++%P.length;nota(PENT[P[i]]/2,3.6,.05);if(i%2===0)nota(PENT[(P[i]+2)%8],2.2,.03,.5);if(i%4===3)nota(PENT[P[i]]*2,1.6,.02,1)},1800);nota(PENT[0]/2,3,.05)}musTxt()}
+musTxt();
+function vidas(){const l=Math.max(G.l,0);$('#ilv').textContent='❤️'.repeat(l)+'🖤'.repeat(3-l)}
+function burst(x,y){const w=$('#intro');for(let i=0;i<12;i++){const p=document.createElement('i');p.className='pt';p.style.left=x+'px';p.style.top=y+'px';w.appendChild(p);const a=Math.random()*6.28,d=50+Math.random()*70;requestAnimationFrame(()=>{p.style.transform='translate('+Math.cos(a)*d+'px,'+Math.sin(a)*d+'px) scale(.2)';p.style.opacity='0'});setTimeout(()=>p.remove(),700)}}
+const fmt=t=>esc(t).replace(/\n/g,'<br>');
+function cdic(){$('#modal').classList.remove('on')}
+async function dic(i){const w=W[i],l=ia(S.lang),k=S.dic=S.dic||{};$('#modal').classList.add('on');
+ const caixa=m=>{$('#q').innerHTML=`<button class='chip' onclick='cdic()'>Fechar</button><h3 style='margin:16px 0 6px'>${esc(w[0])}</h3><p style='font-size:1.3rem;color:var(--g);font-family:Unbounded'>${esc(w[l])}</p><div style='margin:12px 0'><button class='btn' onclick='falar(W[${i}][${l}],S.lang)'>🔊 Ouvir em ${L[S.lang][0].toLowerCase()}</button><button class='btn alt' onclick='falar(W[${i}][0],"pt")'>🔊 Ouvir em português</button></div><div class='box' aria-live='polite'>${m}</div><p class='sub' style='margin-top:14px'>${K.slice(1).map(x=>L[x][2]+' '+esc(w[ia(x)])).join(' · ')}</p>`};
+ if(k[w[0]]){caixa(fmt(k[w[0]]));return}
+ caixa('A procurar o significado…');
+ try{const s=await claude.use('sample');if(!s)throw 0;const r=await s('Funciona como dicionário. Para a palavra ou frase portuguesa “'+w[0]+'”, escreve em português de Portugal: a classe gramatical, o significado numa frase simples e um exemplo curto de utilização. Três linhas curtas, sem markdown.',{modelTier:'quick'});const t=r.text.trim();k[w[0]]=t;save();caixa(fmt(t))}
+ catch(e){caixa('O significado precisa da tua permissão. Abre o site num separador próprio e aceita o pedido.')}}
+const NAV=[['inicio','🏠','Início'],['aprender','🎯','Aprender'],['tradutor','🔁','Tradutor'],['palavras','🃏','Palavras'],['mais','➕','Mais']],SUB=['missoes','conversa','perfil','config'];
+const MENU=$('#ist').innerHTML;
+function menuIntro(){$('#ist').innerHTML=MENU+(S.rec?'<p class="sub" style="margin-top:16px">Recorde: '+S.rec+' pontos</p>':'')}
+function modos(){$('#ist').innerHTML=`<h2 style='margin-bottom:8px'>Escolhe o modo</h2><p class='sub' style='margin:0 auto 20px'>Estoura o balão com a tradução certa. Tens 3 vidas, combos e níveis cada vez mais rápidos.</p><button class='btn' onclick='jogar(1)'>🌿 Calmo</button><button class='btn' onclick='jogar(.6)'>⚡ Rápido</button><button class='btn alt' onclick='menuIntro()'>← Voltar</button>`}
+function cfgIntro(){$('#ist').innerHTML=`<h2 style='margin-bottom:16px'>Configurações</h2><div style='display:grid;gap:12px;justify-items:center'><button class='pill vt' onclick='vozTroca()'></button><button class='pill mt' onclick='musica(!musOn)'></button></div><p class='sub' style='margin:18px auto'>A voz e a música valem para todo o site.</p><button class='btn alt' onclick='menuIntro()'>← Voltar</button>`;vozTxt();musTxt()}
+function sair(){clearInterval(G.iv);if(G.on&&G.s>0){S.xp+=G.s;save();topo()}G.on=false;$('#fld').innerHTML='';$('#hud').hidden=true;$('#ctl').hidden=true;menuIntro();deco()}
+function abrirJogo(){$('#intro').classList.remove('off');modos()}
+function go(k){k==='jogo'?abrirJogo():ir(k)}
+/* ===== versão para alojar (GitHub Pages): funciona sem o Claude ===== */
+const MMC={pt:'pt-PT',zh:'zh-CN'},mmc=l=>MMC[l]||l;
+async function tnet(t,o,d){
+ const u='https://api.mymemory.translated.net/get?q='+encodeURIComponent(t.slice(0,400))+'&langpair='+mmc(o)+'|'+mmc(d);
+ const r=await fetch(u);if(!r.ok)throw new Error('http');const j=await r.json();
+ const x=j.responseData&&j.responseData.translatedText;
+ if(x&&/MYMEMORY WARNING/i.test(x))throw new Error('quota');
+ if(!x||j.responseStatus!=200)throw new Error('api');
+ return x.replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&amp;/g,'&')}
+async function traduz(){const o=$('#o').value,d=$('#d').value,t=$('#in').value.trim();S.o=o;S.d=d;if(!t)return;const n=x=>x.toLowerCase().replace(/[?!.,¿¡]/g,'');
+ const loc=(ia(o)>=0&&ia(d)>=0)?W.find(w=>n(w[ia(o)])===n(t)):null;let txt;
+ if(loc)txt=loc[ia(d)];else if(o===d)txt=t;else{$('#out').textContent='A traduzir…';try{txt=await tnet(t,o,d)}catch(e){txt=e.message==='quota'?'Já usaste o limite gratuito de traduções de hoje. Volta amanhã.':'Não consegui traduzir agora. Verifica a ligação à internet e tenta outra vez.'}}
+ S.res=txt;S.rl=d;S.m.t=(S.m.t||0)+1;S.m.t8=S.m.t;save();render();$('#in').value=t}
+async function gerar(){const m=$('#mm'),ps=$('#tema').value.split(',').map(x=>x.trim()).filter(Boolean).slice(0,4);
+ if(!ps.length){m.textContent='Escreve pelo menos uma palavra ou frase em português.';return}
+ m.textContent='A traduzir as tuas palavras…';const n=[];
+ try{for(const p of ps){const row=[p];for(const k of K.slice(1))row.push(await tnet(p,'pt',k));n.push(row)}}
+ catch(e){m.textContent=e.message==='quota'?'Limite gratuito de traduções atingido por hoje.':'Não consegui traduzir agora. Tenta outra vez.';return}
+ W.push(...n);S.gen.push(...n);save();m.textContent='';li=-1;quiz(n.length>=2?n:[...n,...mix(W).slice(0,3)])}
+const CLS={noun:'nome',verb:'verbo',adjective:'adjetivo',adverb:'advérbio',exclamation:'interjeição',interjection:'interjeição',pronoun:'pronome',preposition:'preposição',conjunction:'conjunção',numeral:'numeral'};
+async function dic(i){const w=W[i],l=ia(S.lang),k=S.dic=S.dic||{};$('#modal').classList.add('on');
+ const caixa=m=>{$('#q').innerHTML=`<button class='chip' onclick='cdic()'>Fechar</button><h3 style='margin:16px 0 6px'>${esc(w[0])}</h3><p style='font-size:1.3rem;color:var(--g);font-family:Unbounded'>${esc(w[l])}</p><div style='margin:12px 0'><button class='btn' onclick='falar(W[${i}][${l}],S.lang)'>🔊 Ouvir em ${L[S.lang][0].toLowerCase()}</button><button class='btn alt' onclick='falar(W[${i}][0],"pt")'>🔊 Ouvir em português</button></div><div class='box' aria-live='polite'>${m}</div><p class='sub' style='margin-top:14px'>${K.slice(1).map(x=>L[x][2]+' '+esc(w[ia(x)])).join(' · ')}</p>`};
+ if(k[w[0]]){caixa(fmt(k[w[0]]));return}
+ caixa('A procurar o significado…');
+ try{const r=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(w[1].toLowerCase()));if(!r.ok)throw 0;const j=await r.json(),me=j[0].meanings[0],df=me.definitions[0];
+  const def=await tnet(df.definition,'en','pt'),t='Classe: '+(CLS[me.partOfSpeech]||me.partOfSpeech)+'\nSignificado: '+def+(df.example?'\nExemplo em inglês: '+df.example:'');
+  k[w[0]]=t;save();caixa(fmt(t))}
+ catch(e){caixa('Não encontrei o significado desta palavra ou frase. Vê a tradução e ouve a pronúncia acima.')}}
+let DES=null;
+function novoDes(){DES=W[Math.floor(Math.random()*W.length)]}
+V.conversa=()=>{if(!DES)novoDes();return `<h2>Treino de frases</h2><p class='sub'>Escreve em ${L[S.lang][0].toLowerCase()}, ou fala no microfone, e eu corrijo.</p>${chips()}<div class='box'><div class='sub' style='margin:0 0 8px'>Como se diz?</div><div class='big' style='color:var(--t)'>${esc(DES[0])}</div></div><textarea id='cm' style='min-height:70px;margin-top:12px' placeholder='A tua resposta…'></textarea><div style='margin-top:12px'><button class='btn' onclick='verDes()'>Verificar</button><button class='btn alt' id='mic' onclick='ditar()'>🎤 Falar</button><button class='btn alt' onclick='novoDes();render()'>Outra frase</button></div><div class='box' id='dres' aria-live='polite' style='margin-top:12px;min-height:60px'></div>`};
+function verDes(){const r=DES[ia(S.lang)],a=norm(r),b=norm($('#cm').value),o=$('#dres');if(!b){o.textContent='Escreve ou diz a tua resposta primeiro.';return}
+ const ok=b===a||lev(a,b)<=(a.length>8?2:1);o.textContent=(ok?'Muito bem! ':'Quase. ')+'Resposta: '+r;falar(r,S.lang);S.m.c2=(S.m.c2||0)+1;if(ok){S.xp+=5;S.m.x=(S.m.x||0)+5;S.m.x2=S.m.x}save();topo()}
+function fecha(){$('#modal').classList.remove('on');render()}
+/* logo: ponteiros com a hora real; clique muda a saudação */
+function relogio(){const d=new Date(),m=d.getMinutes()*6+d.getSeconds()/10,h=(d.getHours()%12)*30+d.getMinutes()/2;
+ $('#hm').setAttribute('transform',`rotate(${m} 32 29)`);$('#hh').setAttribute('transform',`rotate(${h} 32 29)`)}
+relogio();setInterval(relogio,1000);
+let fi=0;$('#logo').onclick=function(){fi=(fi+1)%FR.length;$('#slogan').textContent=FR[fi];this.classList.add('pop');setTimeout(()=>this.classList.remove('pop'),700)};
+render();
+</script>
+<footer style="position:relative;z-index:1;text-align:center;padding:0 16px 90px;color:var(--s);font-size:.85rem"><a href="privacidade.html" style="color:var(--g)">Política de privacidade</a></footer></body>
+</html>
